@@ -1,0 +1,116 @@
+//Evaluation of expression tree using postorder evaluation
+#include<stdio.h>
+#include<stdlib.h>
+typedef struct stack
+{
+        int arr[50];
+        int top;
+        }stack;
+         stack s;
+        int result2;
+
+typedef struct node
+{
+        char data;
+        struct node *left;
+        struct node *right;
+        }Node;
+        
+void push(stack *,int);
+int solve(char data,int temp1, int temp2);
+                
+void postorder(Node *head)
+{
+     int temp1=0,temp2=0,result=0;
+     if(head!=NULL)
+     {
+                   postorder(head->left);
+                   postorder(head->right);
+                   if(((head->data)-'0')> 0 && ((head->data)-'0')< 9)
+                   {
+                                    push(&s,head->data-'0');
+                                    }
+                   else
+                   {
+                   
+                       temp1=pop(&s);
+                       
+                       temp2=pop(&s);
+                       result=solve(head->data,temp1,temp2);
+                       push(&s,result);
+                       }
+     } 
+}
+
+void push(stack *s,int data)
+{
+     s->top=s->top+1;
+     s->arr[s->top]=data;
+     }
+int pop(stack *s)
+{
+    
+    int res;
+    res=s->arr[s->top];
+    s->top=s->top-1;
+    return res;
+}
+int solve(char data,int temp1, int temp2)
+{
+    int ans=0;
+    switch(data)
+    {
+                case '+':
+                     ans=temp2+temp1;
+                     break;
+                case '-':
+                     ans=temp2-temp1;
+                     break;
+                case '*':
+                     
+                     ans=temp2*temp1;
+                     break;
+                case '%':
+                     ans=temp2%temp1;
+                     
+                     break;
+                case '^':
+                     ans=pow(temp2,temp1);
+                     break;
+                case '/':
+                     ans=temp2/temp1;
+                     break;
+    }
+                     
+     return ans;
+     
+}
+void init(stack *s)
+{
+     s->top=-1;
+     }
+int main()
+{
+    Node *head,*temp1,*temp2;
+    head=(Node*)malloc(sizeof(Node));
+    head->data='*';
+    head->left=NULL;
+    head->right=NULL;
+    temp1=(Node*)malloc(sizeof(Node));
+    temp1->data='4';
+    temp2=(Node*)malloc(sizeof(Node));
+    temp2->data='2';
+    head->left=temp1;
+    head->right=temp2;
+    temp1->left=NULL;
+    temp1->right=NULL;
+        temp2->left=NULL;
+    temp2->right=NULL;
+     postorder(head);
+     result2=pop(&s);
+     printf("\n\tresult=%d",result2);
+     getch();
+     return 0;
+}
+
+     
