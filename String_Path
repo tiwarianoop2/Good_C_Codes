@@ -1,0 +1,267 @@
+//Finding a path in given matrix corresponding to giveb string.
+//The output is location of string character in matrix.
+/*
+Summary:Finding (i,j) position of first character in matrix and then checking all direction correspondingly.
+*/
+
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_SIZE 100
+#define TRUE 1
+#define FALSE 0
+
+static void FindPath(char matrix[][100], int m, int n, char* inputStr, int pathIndices[][2], int *found)
+{
+ int i=0,j,k,p,q,count=0,r=1,Dcd1,Dcd2;
+ for(i=0;inputStr[i]!='\0';i++)
+ {
+                           for(j=0;j<m;j++)
+                           {
+                                           for(k=0;k<n;k++)
+                                           {
+                                            if(matrix[j][k]==inputStr[i])
+                                            {
+                                            count++;
+                                            pathIndices[0][0]=j;
+                                            pathIndices[0][1]=k;
+                                            break;                             
+                                            }
+                                           }
+                           if(count!=0)
+                           break;
+                           }
+                          
+                            if(count!=0)
+                           break;
+ //Here I used 2 break statement to get (j)th and (k)th postion of first character matched in string present at (j,k).
+ //Now check for all possible direction of (j,k);
+ }
+  if(count==0)//Condition to check if no srting character is present in given matrix
+  *found=FALSE;
+  else
+  {
+      do{
+                Dcd1=j;
+                Dcd2=k;
+ //Row right-horizontally
+ for(p=k+1;((p<n) && (inputStr[r]!='\0'));p++) 
+        {
+            if(matrix[j][p]!=inputStr[r])
+            {
+                break;
+                }
+            else
+            {
+                j=j;
+                k=p;
+                pathIndices[r][0]=j;
+                pathIndices[r][1]=k;
+              r++;
+              
+              }
+        }
+        if(r==strlen(inputStr))
+             *found=TRUE;
+            // printf("\n\tAnoop");
+  //Row left horizontally
+  if(!*found)
+  {
+
+   for(p=k-1;(p>=0 && (inputStr[r]!='\0'));p--) 
+        { 
+            if(matrix[j][p]!=inputStr[r])
+                break;
+            else
+            {
+                j=j;
+                k=p;
+                pathIndices[r][0]=j;
+                pathIndices[r][1]=k;
+              r++;
+              }
+        }
+        if(r==strlen(inputStr))
+             *found=TRUE;
+        
+    }//end else if
+  //  Row down vertically
+ if(!*found)
+  {
+    for(p=j+1;((p<m) && (inputStr[r]!='\0'));p++) 
+        { 
+            if(matrix[p][k]!=inputStr[r])
+                break;
+            else
+            {
+                j=p;
+                k=k;
+                pathIndices[r][0]=j;
+                pathIndices[r][1]=k;
+              r++;
+              }
+        }
+        if(r==strlen(inputStr))
+             *found=TRUE;       
+    }
+    //Row up vertically
+     if(!*found)
+    {
+       for(p=j-1;((j>=0)&& (inputStr[r]!='\0'));j--) 
+        { 
+            if(matrix[p][k]!=inputStr[r])
+                break;
+           else
+            {
+                j=p;
+                k=k;
+                pathIndices[r][0]=j;
+                pathIndices[r][1]=k;
+              r++;
+              
+              }
+        }     
+      if(r==strlen(inputStr))
+             *found=TRUE;       
+    }
+    // Right-down diagonally     
+    if(!*found)
+    {
+         //r=1;
+         for(p=j+1,q=k+1;((p<m && q<n)&&(inputStr[r]!='\0'));p++,q++) 
+        { 
+            if(matrix[p][q]!=inputStr[r])
+                break;
+                
+            else
+            {
+                j=p;
+                k=q;
+                //printf("\n\tAnoop");
+                pathIndices[r][0]=j;
+                pathIndices[r][1]=k;
+              r++;
+              }
+        }
+         
+         if(r==strlen(inputStr))
+             *found=TRUE;
+         
+         }  
+         
+        // Left-up diagonally     
+    if(!*found)
+    {
+         //r=1;
+         for(p=j-1,q=k-1;((p>=0 && q>=0)&&(inputStr[r]!='\0'));p--,q--) 
+        { 
+            if(matrix[p][q]!=inputStr[r])
+                break;
+                
+            else
+            {
+                j=p;
+                k=q;
+                pathIndices[r][0]=j;
+                pathIndices[r][1]=k;
+              r++;
+              }
+        }
+         
+         if(r==strlen(inputStr))
+             *found=TRUE;
+         
+         }
+         //
+         // Right-up diagonally    
+    if(!*found)
+    {
+         //r=1;
+         for(p=j-1,q=k+1;((p>=0 && q<n)&&(inputStr[r]!='\0'));p--,q++) 
+        { 
+            if(matrix[p][q]!=inputStr[r])
+                break;
+                
+            else
+            {
+                j=p;
+                k=q;
+                pathIndices[r][0]=j;
+                pathIndices[r][1]=k;
+              r++;
+              }
+        }
+         
+         if(r==strlen(inputStr))
+             *found=TRUE;
+         
+         }
+         //Left-Down diagonally   
+    if(!*found)
+    {
+         //r=1;
+         for(p=j+1,q=k-1;((p<m && q>=0)&&(inputStr[r]!='\0'));p++,q--) 
+        { 
+            if(matrix[p][q]!=inputStr[r])
+                break;
+                
+            else
+            {
+                j=p;
+                k=q;
+                pathIndices[r][0]=j;
+                pathIndices[r][1]=k;
+              r++;
+              }
+        }
+         
+         if(r==strlen(inputStr))
+             *found=TRUE;
+         
+    }                                                      
+                                           
+    }while(((*found)!=TRUE)&&(Dcd1!=j && Dcd2!=k)); //Dcd1 and Dcd2 condition is used check condition where partial string match                
+  }//else 
+}
+
+int main(void)
+{
+    char inputStr[MAX_SIZE];
+    char matrix[MAX_SIZE][MAX_SIZE];
+    int pathIndices[MAX_SIZE][2];
+    int m, n,i,j;
+    int found = FALSE;
+    printf("\n\tEnter string:");
+    scanf("%s", inputStr);
+    printf("\n\tEnter row:");
+    scanf("%d",&m);
+    printf("\n\tEnter colom:");
+    scanf("%d",&n);
+    printf("\n\tEnter matrix:");
+    for(i = 0; i<m; i++)
+    {
+        for(j = 0; j<n; j++)
+        {
+              printf("\n\tmatrix[%d][%d]=",i,j);
+            scanf("%*[ \n]%c", &matrix[i][j]);
+        }
+    }
+
+    FindPath(matrix, m, n, inputStr, pathIndices, &found);
+    printf("\n\t-----*************************Result**********************------------");
+    if(!found)
+    {
+
+        printf("\n\tSorry u have no string element in matrix!!!()");
+    }
+    else
+    {
+        for(i = 0; i < strlen(inputStr) ; i++)
+        {
+            printf("(%d,%d) ", pathIndices[i][0],pathIndices[i][1]);
+        }
+    }
+    getch();
+    return 0;
+}
+
